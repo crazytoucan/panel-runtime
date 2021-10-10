@@ -26,11 +26,9 @@ export function Column({ columnId, className }: { columnId: string; className: s
             flex-direction: column;
             flex: 1 1 auto;
             border: 1px solid ${BORDER_COLOR};
-            &:first-child {
+            &:not(:first-child) {
               margin-top: 1px;
             }
-
-            margin-bottom: 1px;
           `}
         >
           <div
@@ -52,6 +50,7 @@ export function Column({ columnId, className }: { columnId: string; className: s
                 color: #ccc;
                 font-size: 13px;
                 font-weight: 500;
+                user-select: none;
               `}
             >
               <PanelTitle panelId={panelId} />
@@ -62,6 +61,7 @@ export function Column({ columnId, className }: { columnId: string; className: s
               z-index: 0;
               border-top: 1px solid ${BORDER_COLOR};
               margin-top: -1px;
+              padding-top: 4px;
               background: ${PANEL_COLOR};
               flex: 1 1 0;
             `}

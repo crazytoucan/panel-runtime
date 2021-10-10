@@ -19,21 +19,19 @@ export function RootComponent({}: {}) {
           flex-direction: row;
           align-items: stretch;
           background: ${NEGATIVE_SPACE_COLOR};
+          padding: 1px;
         `}
       >
         <Column
           columnId={ColumnId.LEFT}
           className={css`
-            margin-left: 1px;
-            margin-right: 1px;
+            padding-right: 1px;
           `}
         />
         <div
           className={css`
             flex: 1 1 auto;
             border: 1px solid ${BORDER_COLOR};
-            margin-top: 1px;
-            margin-bottom: 1px;
           `}
           style={{ flex: "1 1 auto" }}
         >
@@ -42,8 +40,7 @@ export function RootComponent({}: {}) {
         <Column
           columnId={ColumnId.RIGHT}
           className={css`
-            margin-left: 1px;
-            margin-right: 1px;
+            padding-left: 1px;
           `}
         />
       </div>
