@@ -7,9 +7,20 @@ assertNotNull(containerEl);
 
 const runtime = new PanelRuntime();
 runtime.openPanel({
-  name: "Elements",
-  element: <div>Hello Panels</div>,
+  title: "Elements",
+  element: <div>Hello Left 0</div>,
   preferredSide: "left",
+});
+runtime.openPanel({
+  title: "Elements",
+  element: <div>Hello Left 1</div>,
+  preferredSide: "left",
+});
+
+runtime.openPanel({
+  title: "Elements",
+  element: <div>Hello Right</div>,
+  preferredSide: "right",
 });
 
 runtime.mount(containerEl);

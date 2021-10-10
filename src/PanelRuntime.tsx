@@ -10,7 +10,7 @@ import { updateWhere } from "./utils/updateUtils";
 export type PanelLocationArg = "left" | "right";
 
 export interface OpenPanelOptions {
-  name: string;
+  title: string;
   element: ReactChild | null;
   preferredSide?: PanelLocationArg;
 }
@@ -46,7 +46,14 @@ export class PanelRuntime {
           },
         }),
       panelStates: {
-        $push: [{ panelId, htmlElement, reactChild: options.element }],
+        $push: [
+          {
+            panelId,
+            htmlElement,
+            reactChild: options.element,
+            title: options.title,
+          },
+        ],
       },
     });
   }

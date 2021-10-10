@@ -9,6 +9,7 @@ export interface PanelState {
   panelId: string;
   htmlElement: HTMLElement;
   reactChild: ReactChild | null;
+  title: string;
 }
 
 export interface RootState {
