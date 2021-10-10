@@ -1,0 +1,8 @@
+/data
+/var
+/out
+node_modules
+
+.DS_Store
+*.tsbuildinfo
+*.log
