@@ -1,5 +1,3 @@
-const proxy = require("http2-proxy");
-
 function without(values, value) {
   const index = values.indexOf(value);
   const valuesCopy = [...values];
@@ -26,15 +24,4 @@ module.exports = {
     source: "local",
   },
   plugins: ["@snowpack/plugin-react-refresh", "@snowpack/plugin-sass"],
-  routes: [
-    {
-      src: "/api/.*",
-      dest: (req, res) => {
-        return proxy.web(req, res, {
-          hostname: "localhost",
-          port: 3000,
-        });
-      },
-    },
-  ],
 };

@@ -1,27 +1,18 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
     "incremental": true,
     "jsx": "react",
-    "lib": [
-      "dom",
-      "es2020"
-    ],
+    "lib": ["dom", "es2020"],
     "module": "ES2020",
     "moduleResolution": "node",
     "noImplicitAny": true,
     "noUncheckedIndexedAccess": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "paths": {
-      "~/*": [
-        "./*"
-      ]
-    },
     "preserveConstEnums": true,
     "rootDir": "src",
     "skipLibCheck": true,
@@ -31,13 +22,5 @@
     "noEmit": true,
     "resolveJsonModule": true,
     "isolatedModules": true
-  },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  }
 }
