@@ -1,5 +1,7 @@
 import React, { ReactChild } from "react";
 import ReactDOM from "react-dom";
+import { Actions } from "./Actions";
+import { ACTIONS_CONTEXT } from "./actionsContext";
 import { RootComponent } from "./components/RootComponent";
 import { ColumnId } from "./constants";
 import { DRAG_CONTEXT } from "./dragContext";
@@ -20,46 +22,56 @@ export class PanelRuntime {
   private mountEl: HTMLElement | null = null;
   private counter = 10;
   private mainStore = new Store<MainState>({
-    columnStates: [
+    sessionId: "0",
+    columns: [
       {
         columnId: ColumnId.LEFT,
-        panelIds: [],
+        panelGroups: [],
       },
       {
         columnId: ColumnId.RIGHT,
-        panelIds: [],
+        panelGroups: [],
       },
     ],
-    panelStates: [],
   });
 
   private dragStore = new Store<DragState>({
     isDragging: false,
   });
 
+  private actions;
+
+  constructor() {
+    this.actions = new Actions(this.mainStore, this.dragStore);
+    this.actions.initialize();
+  }
+
   openPanel(options: OpenPanelOptions) {
     const side = options.preferredSide ?? "left";
     const columnId = side === "left" ? ColumnId.LEFT : ColumnId.RIGHT;
     const panelId = this.nextId();
+    const panelGroupId = this.nextId();
     const htmlElement = document.createElement("div");
 
     this.mainStore.update({
-      columnStates: (columnStates) =>
+      columns: (columnStates) =>
         updateWhere(columnStates, (c) => c.columnId === columnId, {
-          panelIds: {
-            $push: [panelId],
+          panelGroups: {
+            $push: [
+              {
+                panelGroupId,
+                panels: [
+                  {
+                    panelId,
+                    htmlElement,
+                    reactChild: options.element,
+                    title: options.title,
+                  },
+                ],
+              },
+            ],
           },
         }),
-      panelStates: {
-        $push: [
-          {
-            panelId,
-            htmlElement,
-            reactChild: options.element,
-            title: options.title,
-          },
-        ],
-      },
     });
   }
 
@@ -68,7 +80,9 @@ export class PanelRuntime {
     ReactDOM.render(
       <MAIN_CONTEXT.Provider value={this.mainStore}>
         <DRAG_CONTEXT.Provider value={this.dragStore}>
-          <RootComponent />
+          <ACTIONS_CONTEXT.Provider value={this.actions}>
+            <RootComponent />
+          </ACTIONS_CONTEXT.Provider>
         </DRAG_CONTEXT.Provider>
       </MAIN_CONTEXT.Provider>,
       el,

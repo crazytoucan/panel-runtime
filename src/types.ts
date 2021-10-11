@@ -2,7 +2,7 @@ import { ReactChild } from "react";
 
 export interface ColumnState {
   columnId: string;
-  panelIds: string[];
+  panelGroups: PanelGroupState[];
 }
 
 export interface PanelState {
@@ -12,9 +12,14 @@ export interface PanelState {
   title: string;
 }
 
+export interface PanelGroupState {
+  panelGroupId: string;
+  panels: PanelState[];
+}
+
 export interface MainState {
-  columnStates: ColumnState[];
-  panelStates: PanelState[];
+  sessionId: string;
+  columns: ColumnState[];
 }
 
 export interface DragState {

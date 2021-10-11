@@ -1,9 +1,9 @@
 import { useContext, useLayoutEffect, useReducer, useRef } from "react";
-import { DRAG_CONTEXT } from "../dragContext";
-import { MAIN_CONTEXT } from "../mainContext";
-import { DragState, MainState } from "../types";
-import { assertNotNull } from "./assertUtils";
-import { Store } from "./Store";
+import { DRAG_CONTEXT } from "./dragContext";
+import { MAIN_CONTEXT } from "./mainContext";
+import { DragState, MainState } from "./types";
+import { assertNotNull } from "./utils/assertUtils";
+import { Store } from "./utils/Store";
 
 function useSelector<T, U>(store: Store<T>, selector: (t: T) => U) {
   const [, forceUpdate] = useReducer((x) => x + 1, 0);

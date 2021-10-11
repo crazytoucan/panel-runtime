@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { useMainSelector } from "../utils/useSelector";
+import { useMainSelector } from "../useSelector";
 
 export function PanelTitle({ panelId }: { panelId: string }) {
   const title = useMainSelector(
