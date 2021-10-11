@@ -2,18 +2,7 @@ import React, { useLayoutEffect, useRef } from "react";
 import { useMainSelector } from "../useSelector";
 
 export function PanelInternal({ panelId }: { panelId: string }) {
-  const panelState = useMainSelector((state) => {
-    for (const column of state.columns) {
-      for (const group of column.panelGroups) {
-        for (const panel of group.panels) {
-          if (panel.panelId === panelId) {
-            return panel;
-          }
-        }
-      }
-    }
-    return null;
-  });
+  const panelState = useMainSelector((state) => state.panels.find((p) => p.panelId === panelId));
 
   const ref = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {

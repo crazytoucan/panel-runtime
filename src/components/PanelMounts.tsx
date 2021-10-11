@@ -15,9 +15,7 @@ function PanelMount({
 const PanelMountMemo = memo(PanelMount);
 
 export function PanelMounts({}: {}) {
-  const panels = useMainSelector((state) =>
-    state.columns.flatMap((c) => c.panelGroups.flatMap((g) => g.panels)),
-  );
+  const panels = useMainSelector((state) => state.panels);
 
   return (
     <Fragment>

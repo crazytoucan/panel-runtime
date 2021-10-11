@@ -10,12 +10,13 @@ import { DragState, MainState } from "./types";
 import { Store } from "./utils/Store";
 import { updateWhere } from "./utils/updateUtils";
 
-export type PanelLocationArg = "left" | "right";
+export type ColumnAffinity = "left" | "right";
 
 export interface OpenPanelOptions {
   title: string;
   element: ReactChild | null;
-  preferredSide?: PanelLocationArg;
+  columnAffinity?: ColumnAffinity;
+  groupAffinity?: string;
 }
 
 export class PanelRuntime {
@@ -26,13 +27,15 @@ export class PanelRuntime {
     columns: [
       {
         columnId: ColumnId.LEFT,
-        panelGroups: [],
+        groupIds: [],
       },
       {
         columnId: ColumnId.RIGHT,
-        panelGroups: [],
+        groupIds: [],
       },
     ],
+    groups: [],
+    panels: [],
   });
 
   private dragStore = new Store<DragState>({
@@ -47,31 +50,38 @@ export class PanelRuntime {
   }
 
   openPanel(options: OpenPanelOptions) {
-    const side = options.preferredSide ?? "left";
+    const side = options.columnAffinity ?? "left";
     const columnId = side === "left" ? ColumnId.LEFT : ColumnId.RIGHT;
     const panelId = this.nextId();
-    const panelGroupId = this.nextId();
+    const groupId = this.nextId();
     const htmlElement = document.createElement("div");
 
     this.mainStore.update({
-      columns: (columnStates) =>
-        updateWhere(columnStates, (c) => c.columnId === columnId, {
-          panelGroups: {
-            $push: [
-              {
-                panelGroupId,
-                panels: [
-                  {
-                    panelId,
-                    htmlElement,
-                    reactChild: options.element,
-                    title: options.title,
-                  },
-                ],
-              },
-            ],
+      columns: (columns) =>
+        updateWhere(columns, (c) => c.columnId === columnId, {
+          groupIds: {
+            $push: [groupId],
           },
         }),
+      groups: {
+        $push: [
+          {
+            groupId,
+            panelIds: [panelId],
+            selectedPanelId: panelId,
+          },
+        ],
+      },
+      panels: {
+        $push: [
+          {
+            panelId,
+            htmlElement,
+            reactChild: options.element,
+            title: options.title,
+          },
+        ],
+      },
     });
   }
 

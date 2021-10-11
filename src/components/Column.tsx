@@ -1,7 +1,7 @@
 import { css, cx } from "@emotion/css";
 import React from "react";
 import { useMainSelector } from "../useSelector";
-import { PanelGroup } from "./PanelGroup";
+import { Group } from "./Group";
 
 export function Column({ columnId, className }: { columnId: string; className: string }) {
   const column = useMainSelector((state) => state.columns.find((c) => c.columnId === columnId));
@@ -20,8 +20,8 @@ export function Column({ columnId, className }: { columnId: string; className: s
         className,
       )}
     >
-      {column.panelGroups.map((panelGroup) => (
-        <PanelGroup panelGroupId={panelGroup.panelGroupId} />
+      {column.groupIds.map((groupId) => (
+        <Group key={groupId} groupId={groupId} />
       ))}
     </div>
   );
