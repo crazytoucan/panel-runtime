@@ -1,6 +1,6 @@
 import React, { Fragment, memo, ReactChild } from "react";
 import ReactDOM from "react-dom";
-import { useSelector } from "../utils/useSelector";
+import { useMainSelector } from "../utils/useSelector";
 
 function PanelMount({
   htmlElement,
@@ -15,7 +15,7 @@ function PanelMount({
 const PanelMountMemo = memo(PanelMount);
 
 export function PanelMounts({}: {}) {
-  const panels = useSelector((state) => state.panelStates);
+  const panels = useMainSelector((state) => state.panelStates);
 
   return (
     <Fragment>

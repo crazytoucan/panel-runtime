@@ -1,12 +1,11 @@
 import { useContext, useLayoutEffect, useReducer, useRef } from "react";
-import { STORE_CONTEXT } from "../storeContext";
-import { RootState } from "../types";
+import { DRAG_CONTEXT } from "../dragContext";
+import { MAIN_CONTEXT } from "../mainContext";
+import { DragState, MainState } from "../types";
 import { assertNotNull } from "./assertUtils";
+import { Store } from "./Store";
 
-export function useSelector<U>(selector: (t: RootState) => U) {
-  const store = useContext(STORE_CONTEXT);
-  assertNotNull(store);
-
+function useSelector<T, U>(store: Store<T>, selector: (t: T) => U) {
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
   let ref = useRef<{
     lastValue: U;
@@ -33,4 +32,16 @@ export function useSelector<U>(selector: (t: RootState) => U) {
   }, [ref, store]);
 
   return ref.lastValue;
+}
+
+export function useMainSelector<U>(selector: (t: MainState) => U) {
+  const mainStore = useContext(MAIN_CONTEXT);
+  assertNotNull(mainStore);
+  return useSelector(mainStore, selector);
+}
+
+export function useDragSelector<U>(selector: (t: DragState) => U) {
+  const dragStore = useContext(DRAG_CONTEXT);
+  assertNotNull(dragStore);
+  return useSelector(dragStore, selector);
 }

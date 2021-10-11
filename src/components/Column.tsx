@@ -1,12 +1,15 @@
 import { css, cx } from "@emotion/css";
 import React from "react";
 import { BORDER_COLOR, PANEL_COLOR } from "../styles";
-import { useSelector } from "../utils/useSelector";
+import { useMainSelector } from "../utils/useSelector";
 import { PanelInternal } from "./PanelInternal";
 import { PanelTitle } from "./PanelTitle";
 
 export function Column({ columnId, className }: { columnId: string; className: string }) {
-  const column = useSelector((state) => state.columnStates.find((c) => c.columnId === columnId));
+  const column = useMainSelector((state) =>
+    state.columnStates.find((c) => c.columnId === columnId),
+  );
+
   return (
     <div
       className={cx(
@@ -52,6 +55,10 @@ export function Column({ columnId, className }: { columnId: string; className: s
                 font-weight: 500;
                 user-select: none;
               `}
+              draggable
+              onDragStart={(evt) => {
+                evt.dataTransfer.setData("application/x-panel-runtime.panelId", panelId);
+              }}
             >
               <PanelTitle panelId={panelId} />
             </div>

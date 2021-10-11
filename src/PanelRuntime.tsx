@@ -2,8 +2,9 @@ import React, { ReactChild } from "react";
 import ReactDOM from "react-dom";
 import { RootComponent } from "./components/RootComponent";
 import { ColumnId } from "./constants";
-import { STORE_CONTEXT } from "./storeContext";
-import { RootState } from "./types";
+import { DRAG_CONTEXT } from "./dragContext";
+import { MAIN_CONTEXT } from "./mainContext";
+import { DragState, MainState } from "./types";
 import { Store } from "./utils/Store";
 import { updateWhere } from "./utils/updateUtils";
 
@@ -18,7 +19,7 @@ export interface OpenPanelOptions {
 export class PanelRuntime {
   private mountEl: HTMLElement | null = null;
   private counter = 10;
-  private store = new Store<RootState>({
+  private mainStore = new Store<MainState>({
     columnStates: [
       {
         columnId: ColumnId.LEFT,
@@ -32,13 +33,17 @@ export class PanelRuntime {
     panelStates: [],
   });
 
+  private dragStore = new Store<DragState>({
+    isDragging: false,
+  });
+
   openPanel(options: OpenPanelOptions) {
     const side = options.preferredSide ?? "left";
     const columnId = side === "left" ? ColumnId.LEFT : ColumnId.RIGHT;
     const panelId = this.nextId();
     const htmlElement = document.createElement("div");
 
-    this.store.update({
+    this.mainStore.update({
       columnStates: (columnStates) =>
         updateWhere(columnStates, (c) => c.columnId === columnId, {
           panelIds: {
@@ -61,9 +66,11 @@ export class PanelRuntime {
   mount(el: HTMLElement) {
     this.mountEl = el;
     ReactDOM.render(
-      <STORE_CONTEXT.Provider value={this.store}>
-        <RootComponent />
-      </STORE_CONTEXT.Provider>,
+      <MAIN_CONTEXT.Provider value={this.mainStore}>
+        <DRAG_CONTEXT.Provider value={this.dragStore}>
+          <RootComponent />
+        </DRAG_CONTEXT.Provider>
+      </MAIN_CONTEXT.Provider>,
       el,
     );
   }

@@ -12,7 +12,11 @@ export interface PanelState {
   title: string;
 }
 
-export interface RootState {
+export interface MainState {
   columnStates: ColumnState[];
   panelStates: PanelState[];
+}
+
+export interface DragState {
+  isDragging: boolean;
 }
